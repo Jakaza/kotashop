@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
 
 <head>
     <!-- basic -->
@@ -28,6 +30,7 @@
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <!-- body -->
 
@@ -48,16 +51,16 @@
             <ul class="list-unstyled components">
 
                 <li class="active">
-                    <a href="index.html">Home</a>
+                    <a th:href="@{/}">Home</a>
                 </li>
                 <li>
-                    <a href="recipe.html">Cart</a>
+                    <a th:href="@{/cart}">Cart</a>
                 </li>
                 <li>
-                    <a href="blog.html">Orders</a>
+                    <a th:href="@{/orders}">Orders</a>
                 </li>
                 <li>
-                    <a href="contact.html">Contact Us</a>
+                    <a th:href="@{/contact}">Contact Us</a>
                 </li>
             </ul>
 
@@ -71,7 +74,7 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="full">
-                            <a class="logo" href="index.html" style="color: white;">KotaMamas</a>
+                            <a class="logo" th:href="@{/}" style="color: white;">KotaMamas</a>
                         </div>
                     </div>
                     <div class="col-md-9">
@@ -79,7 +82,7 @@
                             <div class="right_header_info">
                                 <ul>
                                     <li class="dinone">Contact Us : <img style="margin-right: 15px;margin-left: 15px;" src="/images/phone_icon.png" alt="#"><a href="#">0711770423</a></li>
-                                    <li class="button_user"><a class="button active" href="#">Login</a><a class="button" href="#">Register</a></li>
+                                    <li class="button_user"><a class="button active" th:href="@{/login}">Login</a><a class="button" th:href="@{/register}">Register</a></li>
                                     <li>
                                         <button type="button" id="sidebarCollapse">
                                             <img src="/images/menu_icon.png" alt="#">
@@ -98,37 +101,80 @@
             <div class="container">
                 <div class="row col-cnter" >
                     <div class="col-md-5">
+
+
+
+
                         <div class="full">
+
+                            <div th:if="${param.success}" >
+                              <script>
+                                  swal("Good job!", "You clicked the button!", "success")
+                                  .then(() => {
+                                        window.location.href = '/login';
+                                   });
+
+                              </script>
+                            </div>
+
                             <div id="main_slider" class="carousel vert slide" data-ride="carousel" data-interval="5000">
 
-                                <form class="custom-form">
+                                <form class="custom-form" method="post" th:action="@{/register/save}"  th:object="${user}">
                                     <div class="mb-3">
                                         <label for="fullname" class="form-label">FullName</label>
-                                        <input type="text" class="form-control" name="fullname" id="fullname" aria-describedby="emailHelp">
-                                     
+                                        <div th:errors = "*{fullname}"  th:if="${#fields.hasErrors('fullname')}" style="color:red;">
+
+                                        </div>
+                                        <input type="text" class="form-control" name="fullname" th:field="*{fullname}" id="fullname" aria-describedby="emailHelp">
+
+
+
                                     </div>
                                     <div class="mb-3">
                                         <label for="surname" class="form-label">Surname</label>
-                                        <input type="text" name="surname" class="form-control" id="surname" aria-describedby="emailHelp">
-                                     
+                                        <div th:errors = "*{surname}"  th:if="${#fields.hasErrors('surname')}" style="color:red;">
+
+                                        </div>
+                                        <input type="text" name="surname" th:field="*{surname}" class="form-control" id="surname" aria-describedby="emailHelp">
+
+
                                     </div>
 
                                     <div class="mb-3">
                                         <label  class="form-label">Address</label>
-                                        <input type="text" class="form-control" name="country" id="country" placeholder="Country" aria-describedby="emailHelp">
-                                        <input type="text" class="form-control" id="township" name="township" placeholder="Township" aria-describedby="emailHelp">
-                                        <input type="text" class="form-control" id="housenumber" name="housenumber" placeholder="House Number" aria-describedby="emailHelp">
-                                        
+                                        <div th:errors = "*{country}"  th:if="${#fields.hasErrors('country')}" style="color:red;">
+
+                                        </div>
+                                        <input type="text" class="form-control" name="country" th:field="*{country}" id="country" placeholder="Country" aria-describedby="emailHelp">
+
+                                        <div th:errors = "*{township}"  th:if="${#fields.hasErrors('township')}" style="color:red;">
+
+                                        </div>
+                                        <input type="text" class="form-control" id="township" name="township" th:field="*{township}" placeholder="Township" aria-describedby="emailHelp">
+
+                                        <div th:errors = "*{housenumber}"  th:if="${#fields.hasErrors('housenumber')}" style="color:red;">
+
+                                        </div>
+                                        <input type="text" class="form-control" id="housenumber" name="housenumber" th:field="*{housenumber}" placeholder="House Number" aria-describedby="emailHelp">
+
+
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email address</label>
-                                        <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp">
-                                     
+                                        <div th:errors = "*{email}"  th:if="${#fields.hasErrors('email')}" style="color:red;">
+
+                                        </div>
+                                        <input type="email" name="email" th:field="*{email}" class="form-control" id="email" aria-describedby="emailHelp">
+
                                     </div>
                                     <div class="mb-3">
                                         <label for="password" class="form-label">Password</label>
-                                        <input type="password" name="password" class="form-control" id="password">
+                                        <div th:errors = "*{password}"  th:if="${#fields.hasErrors('password')}" style="color:red;">
+
+                                        </div>
+                                        <input type="password"  th:field="*{password}" name="password" class="form-control" id="password">
+
                                     </div>
                          
                                     <button type="submit" class="btn btn-primary">Submit</button>

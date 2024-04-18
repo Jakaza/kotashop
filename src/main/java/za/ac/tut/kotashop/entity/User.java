@@ -35,13 +35,22 @@ public class User {
     @Column(nullable=false)
     private String password;
 
+    @Column(nullable=false)
+    private String role;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    @JoinTable(
-            name="user_roles",
-            joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="ID")},
-            inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="ID")})
-    private List<Role> roles = new ArrayList<>();
+    public User() {
+        // Set default role to CUSTOMER
+        this.role = "CUSTOMER";
+    }
+
+    // Getter and setter methods for role
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
 
     public Long getId() {
@@ -108,3 +117,4 @@ public class User {
         this.password = password;
     }
 }
+
