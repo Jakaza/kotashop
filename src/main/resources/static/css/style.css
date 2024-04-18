@@ -12,7 +12,7 @@
      font-weight: normal;
 }
  a {
-     color: #1f1f1f;
+     color: #f1f1f1;
      text-decoration: none !important;
      outline: none !important;
      -webkit-transition: all .3s ease-in-out;
@@ -793,7 +793,7 @@
      left: -280px;
      height: 100vh;
      z-index: 999;
-     background: #fff;
+     background: #212020;
      color: #fff;
      transition: all 0.3s;
      overflow-y: scroll;
