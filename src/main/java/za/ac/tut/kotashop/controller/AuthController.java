@@ -34,6 +34,35 @@ public class AuthController {
         return "dashboard";
     }
 
+    @GetMapping("/admin/customers")
+    public String adminCustomers(){
+        return "viewCustomers";
+    }
+
+    @GetMapping("/admin/products")
+    public String adminProducts(){
+        return "viewAllProducts";
+    }
+
+    @GetMapping("/admin/categories")
+    public String adminCategories(){
+        return "viewCategories";
+    }
+
+
+    @GetMapping("/admin/orders")
+    public String adminOrders(){
+        return "viewAllOrders";
+    }
+
+
+    @GetMapping("/admin/order")
+    public String adminOrder(){
+        return "viewEachOrder";
+    }
+
+
+
     @GetMapping("/register")
     public String showRegistrationForm(Model model){
         UserDto user = new UserDto();
