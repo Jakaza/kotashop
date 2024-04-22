@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
 <head>
   <title>Admin</title>
   <head>
@@ -40,17 +42,16 @@
         <img src="../assets/images/logo.png" width="120" height="120" alt="Swiss Collection"> 
         <h5 style="margin-top:10px;">Hello, Admin</h5>
     </div>
-    
-    <hr style="border:1px solid; background-color:#8a7b6d; border-color:#3B3131;">
-  
-        <a href="../index.html" ><i class="fa fa-home"></i> Dashboard</a>
-        <a href="/adminView/viewCustomers.html"   ><i class="fa fa-users"></i> Customers</a>
-        <a href="/adminView/viewCategories.html"   ><i class="fa fa-th-large"></i> Category</a>
-        <a href="/adminView/viewAllProducts.html"  ><i class="fa fa-th"></i> Products</a>
-        <a href="/adminView/viewAllOrders.html" ><i class="fa fa-list"></i> Orders</a>
-        <a href="/adminView/viewEachOrder.html" ><i class="fa fa-list"></i> Each Orders</a>
-      
-      <!---->
+
+    <hr style="border:1px solid; background-color:#212020; border-color:#3B3131;">
+    <a href="/dashboard" ><i class="fa fa-home"></i> Dashboard</a>
+    <a href="/admin/customers"   ><i class="fa fa-users"></i> Customers</a>
+    <a href="/admin/categories"   ><i class="fa fa-th-large"></i> Category</a>
+    <a href="/admin/products"  ><i class="fa fa-th"></i> Products</a>
+    <a href="/admin/orders" ><i class="fa fa-list"></i> Orders</a>
+    <a href="/admin/order" ><i class="fa fa-list"></i> Each Orders</a>
+
+    <!---->
     </div>
      
     <div id="main">
@@ -63,18 +64,28 @@
             <div class="col">
               <div >
                 <h3>Category Items</h3>
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th class="text-center">S.N.</th>
-                      <th class="text-center">Category Name</th>
-                      <th class="text-center" colspan="2">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody id="categoryTableBody">
-                    <!-- Categories will be dynamically added here -->
-                  </tbody>
-                </table>
+                  <table class="table">
+                      <thead>
+                      <tr>
+                          <th class="text-center">S.N.</th>
+                          <th class="text-center">Category Name</th>
+                          <th class="text-center" colspan="2">Action</th>
+                      </tr>
+                      </thead>
+                      <tbody id="categoryTableBody">
+                      <!-- Iterate over categories -->
+                      <tr th:each="category, iStat : ${categories}">
+                          <td class="text-center" th:text="${iStat.index + 1}">1</td>
+                          <td th:text="${category.categoryName}">Category Name</td>
+                          <td class="text-center">
+                              <form th:action="@{/admin/category/delete/{categoryId}(categoryId=${category.categoryId})}" method="post">
+                                  <input type="hidden" name="_method" value="delete" />
+                                  <button type="submit" class="btn btn-danger" style="height: 40px">Delete</button>
+                              </form>
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
               
                 <!-- Trigger the modal with a button -->
                 <button type="button" class="btn btn-secondary" style="height:40px" data-toggle="modal" data-target="#myModal">
@@ -92,10 +103,10 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                       </div>
                       <div class="modal-body">
-                        <form  enctype='multipart/form-data' action="./controller/addCatController.php" method="POST">
+                        <form  method="post" th:action="@{/admin/category/create}"  th:object="${category}">
                           <div class="form-group">
                             <label for="c_name">Category Name:</label>
-                            <input type="text" class="form-control" name="c_name" required>
+                            <input type="text" class="form-control" name="categoryName" required>
                           </div>
                           <div class="form-group">
                             <button type="submit" class="btn btn-secondary" name="upload" style="height:40px">Add Category</button>
@@ -135,41 +146,3 @@
 
 
 
-
-<script>
-  // Array of fake categories
-  var fakeCategories = [
-    { category_name: "Electronics" },
-    { category_name: "Clothing" },
-    { category_name: "Books" },
-    { category_name: "Home Decor" },
-    { category_name: "Sports Equipment" }
-  ];
-
-  // Function to populate the table with fake categories
-  function populateTable() {
-    var tableBody = document.getElementById("categoryTableBody");
-
-    // Clear existing table rows
-    tableBody.innerHTML = "";
-
-    // Loop through fake categories and create table rows
-    for (var i = 0; i < fakeCategories.length; i++) {
-      var row = "<tr>" +
-                  "<td>" + (i + 1) + "</td>" +
-                  "<td>" + fakeCategories[i].category_name + "</td>" +
-                  "<td><button class='btn btn-danger' style='height:40px' onclick='categoryDelete(" + i + ")'>Delete</button></td>" +
-                "</tr>";
-      tableBody.innerHTML += row;
-    }
-  }
-
-  // Call the function to populate the table
-  populateTable();
-
-  // Function to simulate category deletion
-  function categoryDelete(index) {
-    // You can implement deletion logic here, for now, let's just log the index
-    console.log("Deleting category at index: " + index);
-  }
-</script>

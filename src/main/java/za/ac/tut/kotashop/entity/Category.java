@@ -1,11 +1,12 @@
 package za.ac.tut.kotashop.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.*;
+import java.util.List;
 
+@Entity
+@Table(name = "category")
 public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
@@ -14,7 +15,20 @@ public class Category {
     @Column(name = "category_name")
     private String categoryName;
 
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<Product> products;
+
     // Constructors, getters, and setters
+
+    public Category() {
+        // Default constructor
+    }
+
+    public Category(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    // Getters and setters
 
     public Long getCategoryId() {
         return categoryId;
@@ -30,5 +44,13 @@ public class Category {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

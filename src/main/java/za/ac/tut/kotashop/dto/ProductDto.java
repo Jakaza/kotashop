@@ -13,7 +13,7 @@ public class ProductDto {
     @NotEmpty(message = "Product description should not be empty")
     private String productDescription;
 
-    private byte[] productImage;
+    private String productImage;
 
     @NotNull(message = "Price should not be empty")
     private Integer price;
@@ -47,11 +47,11 @@ public class ProductDto {
         this.productDescription = productDescription;
     }
 
-    public byte[] getProductImage() {
+    public String getProductImage() {
         return productImage;
     }
 
-    public void setProductImage(byte[] productImage) {
+    public void setProductImage(String productImage) {
         this.productImage = productImage;
     }
 

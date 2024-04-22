@@ -6,12 +6,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
+import za.ac.tut.kotashop.dto.CategoryDto;
+import za.ac.tut.kotashop.dto.ProductDto;
 import za.ac.tut.kotashop.dto.UserDto;
 import za.ac.tut.kotashop.entity.User;
+import za.ac.tut.kotashop.service.CategoryService;
 import za.ac.tut.kotashop.service.UserService;
+
+import java.util.List;
 
 @Controller
 public class AuthController {
@@ -19,9 +23,11 @@ public class AuthController {
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     private UserService userService;
+    private CategoryService categoryService;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService , CategoryService categoryService) {
         this.userService = userService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/")
@@ -44,11 +50,39 @@ public class AuthController {
         return "viewAllProducts";
     }
 
+    @PostMapping("/admin/products/create")
+    public RedirectView adminCreateProduct(@Valid @ModelAttribute("product") ProductDto productDto,
+                                     BindingResult result,
+                                     Model model){
+
+
+
+        return new RedirectView("/admin/products?success", true);
+    }
+
+
+
     @GetMapping("/admin/categories")
-    public String adminCategories(){
+    public String adminCategories(Model model){
+        List<CategoryDto> allCategories = categoryService.findAllCategories();
+        model.addAttribute("categories", allCategories);
         return "viewCategories";
     }
 
+    @PostMapping("/admin/category/create")
+    public String adminCreateCategory(@Valid @ModelAttribute("category") CategoryDto categoryDto,
+                                     BindingResult result,
+                                     Model model){
+        categoryService.saveCategory(categoryDto);
+        return "redirect:/admin/categories?success";
+    }
+
+    @PostMapping("/admin/category/delete/{categoryId}")
+    @ResponseBody
+    public RedirectView deleteCategory(@PathVariable Long categoryId) {
+        categoryService.deleteCategory(categoryId);
+        return new RedirectView("/admin/categories?success", true);
+    }
 
     @GetMapping("/admin/orders")
     public String adminOrders(){
@@ -60,7 +94,6 @@ public class AuthController {
     public String adminOrder(){
         return "viewEachOrder";
     }
-
 
 
     @GetMapping("/register")
