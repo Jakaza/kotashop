@@ -7,12 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 import za.ac.tut.kotashop.dto.CategoryDto;
 import za.ac.tut.kotashop.dto.ProductDto;
 import za.ac.tut.kotashop.dto.UserDto;
 import za.ac.tut.kotashop.entity.User;
 import za.ac.tut.kotashop.service.CategoryService;
+import za.ac.tut.kotashop.service.ProductService;
 import za.ac.tut.kotashop.service.UserService;
 
 import java.util.List;
@@ -24,10 +26,12 @@ public class AuthController {
 
     private UserService userService;
     private CategoryService categoryService;
+    private ProductService productService;
 
-    public AuthController(UserService userService , CategoryService categoryService) {
+    public AuthController(UserService userService , CategoryService categoryService , ProductService productService) {
         this.userService = userService;
         this.categoryService = categoryService;
+        this.productService = productService;
     }
 
     @GetMapping("/")
@@ -53,9 +57,24 @@ public class AuthController {
     @PostMapping("/admin/products/create")
     public RedirectView adminCreateProduct(@Valid @ModelAttribute("product") ProductDto productDto,
                                      BindingResult result,
-                                     Model model){
+                                     Model model , @RequestParam("file") MultipartFile file){
 
 
+        if (result.hasErrors()) {
+            // Handle validation errors
+            // You can add error messages to the model if needed
+            System.out.println(result.toString());
+            return new RedirectView("/admin/products?error", true);
+        }
+
+        if (file.isEmpty()) {
+            // Handle file not uploaded error
+            // You can add error messages to the model if needed
+            return new RedirectView("/admin/products?error", true);
+        }
+
+        // Save the product and its image
+        productService.saveProduct(productDto, file);
 
         return new RedirectView("/admin/products?success", true);
     }

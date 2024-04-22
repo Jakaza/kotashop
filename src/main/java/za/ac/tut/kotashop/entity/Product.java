@@ -2,6 +2,7 @@ package za.ac.tut.kotashop.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 @Entity
 @Table(name = "product")
@@ -103,5 +104,18 @@ public class Product {
 
     public void setUploadedDate(LocalDate uploadedDate) {
         this.uploadedDate = uploadedDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", productDescription='" + productDescription + '\'' +
+                ", productImage=" + Arrays.toString(productImage) +
+                ", price=" + price +
+                ", category=" + category +
+                ", uploadedDate=" + uploadedDate +
+                '}';
     }
 }
