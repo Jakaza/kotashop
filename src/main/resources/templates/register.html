@@ -109,11 +109,10 @@
 
                             <div th:if="${param.success}" >
                               <script>
-                                  swal("Good job!", "You clicked the button!", "success")
+                                  swal("Account Created!", "You clicked the button to login!", "success")
                                   .then(() => {
                                         window.location.href = '/login';
                                    });
-
                               </script>
                             </div>
 
@@ -195,24 +194,6 @@
         <!-- footer -->
         <fooetr>
             <div class="footer">
-                <div class="container-fluid">
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="footer_logo">
-                                <a href="index.html"><img src="images/logo1.jpg" alt="logo" /></a>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <ul class="lik">
-                                <li class="active"> <a href="index.html">Home</a></li>
-                                <li> <a href="about.html">Cart</a></li>
-                                <li> <a href="recipe.html">Orders</a></li>
-                                <li> <a href="contact.html">Contact us</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
                 <div class="copyright">
                     <div class="container">
                         <p>© 2024 All Rights Reserved.</p>

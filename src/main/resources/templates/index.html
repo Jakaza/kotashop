@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <!-- basic -->
@@ -75,7 +75,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="full">
-                        <a class="logo" href="index.html" style="color: white;">KotaMamas</a>
+                        <a class="logo" th:href="@{/}" style="color: white;">KotaMamas</a>
                     </div>
                 </div>
                 <div class="col-md-9">
@@ -83,7 +83,12 @@
                         <div class="right_header_info">
                             <ul>
                                 <li class="dinone">Contact Us : <img style="margin-right: 15px;margin-left: 15px;" src="/images/phone_icon.png" alt="#"><a href="#">0711770423</a></li>
-                                <li class="button_user"><a class="button active" href="/login">Login</a><a class="button" href="#">Register</a></li>
+
+                                <li class="button_user">
+                                    <a class="button active" th:href="@{/orders}">Orders <spans style="color:red;" >(0)</spans> </a><a class="button" th:href="@{/carts}">Cart  <spans id="cart-count" style="color:red;" >(0)</spans></a>
+                                </li>
+
+
                                 <li>
                                     <button type="button" id="sidebarCollapse">
                                         <img src="/images/menu_icon.png" alt="#">
@@ -290,23 +295,23 @@
 
 
 
-<div class="product col-sm-3">
+<div class="product col-sm-3" th:each="product, i : ${products}">
 <div>
 
 <div class="product_img">  
     <a href="/products/artisan-cheese-hamper">
-    	<img src="//tm-shopify054-gifts.myshopify.com/cdn/shop/products/artisan_cheese_hamper_1_compact.png?v=1402319123" alt="Artisan Cheese Hamper">
+    	<img img th:src="'data:image/jpeg;base64,' + ${product.productImage}" >
     </a>
 </div>
 
 <div class="product_info">
     <div class="product_name">
-      <h3>Artisan Cheese Hamper</h3>
+      <h3 th:text="${product.productName}"></h3>
     </div>
  
     <div class="product_price">
         
-        <span class="money" data-currency-usd="R60.00">R60.00</span>
+        <span class="money" th:text="'R' + ${product.price}" data-currency-usd="${product.price}"></span>
         
     </div>
     <!-- 
@@ -351,346 +356,6 @@
 
 
 
-<div class="product col-sm-3">
-<div>
-
-<div class="product_img">  
-    <a href="/products/double-delight-tower-with-one-dozen-cookies">
-    	<img src="//tm-shopify054-gifts.myshopify.com/cdn/shop/products/double_delight_tower_with_one_dozen_cookies_1_compact.png?v=1402319220" alt="Double Delight Tower with One Dozen Cookies">
-    </a>
-</div>
-
-<div class="product_info">
-    <div class="product_name">
-        <h3>Double Delight Tower with One Dozen Cookies</h3>
-    </div>
- 
-    <div class="product_price">
-        
-        <span class="money" data-currency-usd="R399.00">R399.00</span>
-        
-    </div>
-    <!-- 
-    This is just a regular add product form. 
-    You should be able to add any valid input fields to it 
--->
-<form method="post" action="/cart/add">
-    <!-- We can leave this in, since the select comes later, 
-        so it will override if user picks something different. -->
-    
-        <input type="hidden" name="id" value="711891871">
-    
-
-  	
-
-	<!-- START BUY -->
-	    		    
-		    <button class="btn btn-cart" type="submit">Add to cart</button>
-		
-	<!-- END BUY -->
-</form>         
-</div>
-  
-</div>
-</div>
-
-
-    
-    
-    
-
-
-   
-    
-      
-    
-    
-    
-
-
-
-
-
-
-<div class="product col-sm-3">
-<div>
-
-<div class="product_img">  
-    <a href="/products/baby-first-block">
-    	<img src="//tm-shopify054-gifts.myshopify.com/cdn/shop/products/baby_first_block_1_compact.png?v=1402319141" alt="Baby First Block">
-    </a>
-</div>
-
-<div class="product_info">
-    <div class="product_name">
-       <h3>Baby First Block</h3>
-    </div>
- 
-    <div class="product_price">
-        
-        <span class="money" data-currency-usd="R399.00">R399.00</span>
-        
-        <!-- <span class="money compare-at-price" data-currency-usd="R500.00">R500.00</span> -->
-        
-    </div>
-    <!-- 
-    This is just a regular add product form. 
-    You should be able to add any valid input fields to it 
--->
-<form method="post" action="/cart/add">
-    <!-- We can leave this in, since the select comes later, 
-        so it will override if user picks something different. -->
-    
-        <input type="hidden" name="id" value="711891223">
-    
-
-  	
-
-	<!-- START BUY -->
-	    		    
-		    <button class="btn btn-cart" type="submit">Add to cart</button>
-		
-	<!-- END BUY -->
-</form>         
-</div>
-  
-</div>
-</div>
-
-
-    
-    </div></div>
-    
-
-
-   
-    
-      
-    
-    <div class="product_listing_main"><div class="row">
-    
-
-
-
-
-
-
-<div class="product col-sm-3">
-<div>
-
-<div class="product_img">  
-    <a href="/products/food-love-gourmet-basket">
-    	<img src="//tm-shopify054-gifts.myshopify.com/cdn/shop/products/food_and_love_gourmet_basket_1_compact.png?v=1402319246" alt="Food &amp; Love Gourmet Basket">
-    </a>
-</div>
-
-<div class="product_info">
-    <div class="product_name">
-       <h3>Food  Love Gourmet Basket</h3>
-    </div>
-  
-    <div class="product_price">
-        
-        <span class="money" data-currency-usd="R320.00">R320.00</span>
-        
-    </div>
-    <!-- 
-    This is just a regular add product form. 
-    You should be able to add any valid input fields to it 
--->
-<form method="post" action="/cart/add">
-    <!-- We can leave this in, since the select comes later, 
-        so it will override if user picks something different. -->
-    
-        <input type="hidden" name="id" value="711892135">
-    
-
-  	
-
-	<!-- START BUY -->
-	    		    
-		    <button class="btn btn-cart" type="submit">Add to cart</button>
-		
-	<!-- END BUY -->
-</form>         
-</div>
-  
-</div>
-</div>
-
-
-    
-    
-    
-
-
-   
-    
-      
-    
-    
-    
-
-
-
-
-
-
-<div class="product col-sm-3">
-<div>
-
-<div class="product_img">  
-    <a href="/products/bon-appetit-gourmet-gift-basket">
-    	<img src="//tm-shopify054-gifts.myshopify.com/cdn/shop/products/bon_appetit_gourmet_gift_basket_1_compact.png?v=1402319171" alt="Bon Appetit Gourmet Gift Basket">
-    </a>
-</div>
-
-<div class="product_info">
-    <div class="product_name">
-        <h3>Bon Appetit Gourmet Gift Basket</h3>
-    </div>
- 
-    <div class="product_price">
-        
-        <span class="money" data-currency-usd="R320.00">R320.00</span>
-        
-        <!-- <span class="money compare-at-price" data-currency-usd="R400.00">R400.00</span> -->
-        
-    </div>
-    <!-- 
-    This is just a regular add product form. 
-    You should be able to add any valid input fields to it 
--->
-<form method="post" action="/cart/add">
-    <!-- We can leave this in, since the select comes later, 
-        so it will override if user picks something different. -->
-    
-        <input type="hidden" name="id" value="711891383">
-    
-
-  	
-
-	<!-- START BUY -->
-	    		    
-		    <button class="btn btn-cart" type="submit">Add to cart</button>
-		
-	<!-- END BUY -->
-</form>         
-</div>
-  
-</div>
-</div>
-
-
-    
-    
-    
-
-
-   
-    
-      
-    
-    
-    
-
-
-
-
-
-
-<div class="product col-sm-3">
-<div>
-
-<div class="product_img">  
-    <a href="/products/bath-body-invigoration">
-    	<img src="//tm-shopify054-gifts.myshopify.com/cdn/shop/products/bath_and_body_invigoration_1_compact.png?v=1402319151" alt="Bath &amp; Body Invigoration">
-    </a>
-</div>
-
-<div class="product_info">
-    <div class="product_name">
-       <h3>Bath Body Invigoration</h3>
-    </div>
-
-    <div class="product_price">
-        
-        <span class="money" data-currency-usd="R420.00">R420.00</span>
-        
-    </div>
-    <!-- 
-    This is just a regular add product form. 
-    You should be able to add any valid input fields to it 
--->
-<form method="post" action="/cart/add">
-    <!-- We can leave this in, since the select comes later, 
-        so it will override if user picks something different. -->
-    
-        <input type="hidden" name="id" value="711891295">
-    
-
-  	
-
-	<!-- START BUY -->
-	    		    
-		    <button class="btn btn-cart" type="submit">Add to cart</button>
-		
-	<!-- END BUY -->
-</form>         
-</div>
-  
-
-
-</div>
-</div>
-
-
-  
-<div class="product col-sm-3">
-    <div>
-    
-    <div class="product_img">  
-        <a href="/products/bath-body-invigoration">
-            <img src="//tm-shopify054-gifts.myshopify.com/cdn/shop/products/bath_and_body_invigoration_1_compact.png?v=1402319151" alt="Bath &amp; Body Invigoration">
-        </a>
-    </div>
-    
-    <div class="product_info">
-        <div class="product_name">
-           <h3>Bath Body Invigoration</h3>
-        </div>
-      
-        <div class="product_price">
-            
-            <span class="money" data-currency-usd="R420.00">R420.00</span>
-            
-        </div>
-        <!-- 
-        This is just a regular add product form. 
-        You should be able to add any valid input fields to it 
-    -->
-    <form method="post" action="/cart/add">
-        <!-- We can leave this in, since the select comes later, 
-            so it will override if user picks something different. -->
-        
-            <input type="hidden" name="id" value="711891295">
-        
-    
-          
-    
-        <!-- START BUY -->
-                        
-                <button class="btn btn-cart" type="submit">Add to cart</button>
-            
-        <!-- END BUY -->
-    </form>         
-    </div>
-      
-    
-    
-    </div>
-    </div>
-      
 
 
 </div></div>   
@@ -748,7 +413,57 @@
     
      <script src="js/jquery-3.0.0.min.js"></script>
    <script type="text/javascript">
+
+
+       function addToCart(productId, productName) {
+    // Retrieve existing cart items from local storage or initialize an empty array
+    var cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Find the product in the cart items
+    var productInCart = cartItems.find(item => item.id === productId);
+
+    // If product is not in the cart, add it with a quantity of 1
+    if (!productInCart) {
+        cartItems.push({ id: productId, name: productName, quantity: 1 });
+    } else {
+        // If product is already in the cart, increase its quantity by 1
+        productInCart.quantity++;
+    }
+
+    // Save updated cart items back to local storage
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+}
+
+
+
+function updateCartCount() {
+    var cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    var totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+    $('#cart-count').text('(' + totalQuantity + ')');
+}
+
+
+
+
+
+
+
         $(document).ready(function() {
+
+        updateCartCount();
+
+           $('.btn-cart').on('click', function(event) {
+            event.preventDefault(); // Prevent form submission
+            var productId = $(this).closest('.product').find('input[name="id"]').val(); // Get product ID
+            var productName = $(this).closest('.product').find('.product_name h3').text(); // Get product name
+            addToCart(productId, productName); // Add product to cart
+            updateCartCount();
+            alert('Product added to cart!');
+            });
+
+
+
+
             $("#sidebar").mCustomScrollbar({
                 theme: "minimal"
             });

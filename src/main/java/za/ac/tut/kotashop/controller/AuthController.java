@@ -1,5 +1,6 @@
 package za.ac.tut.kotashop.controller;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,12 +13,13 @@ import org.springframework.web.servlet.view.RedirectView;
 import za.ac.tut.kotashop.dto.CategoryDto;
 import za.ac.tut.kotashop.dto.ProductDto;
 import za.ac.tut.kotashop.dto.UserDto;
+import za.ac.tut.kotashop.dto.UserLogin;
 import za.ac.tut.kotashop.entity.User;
 import za.ac.tut.kotashop.service.CategoryService;
 import za.ac.tut.kotashop.service.ProductService;
 import za.ac.tut.kotashop.service.UserService;
+import za.ac.tut.kotashop.utils.SessionManager;
 
-import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -28,16 +30,28 @@ public class AuthController {
     private UserService userService;
     private CategoryService categoryService;
     private ProductService productService;
+    private SessionManager sessionManager;
 
-    public AuthController(UserService userService , CategoryService categoryService , ProductService productService) {
+    public AuthController(UserService userService , CategoryService categoryService , ProductService productService, SessionManager sessionManager) {
         this.userService = userService;
         this.categoryService = categoryService;
         this.productService = productService;
+        this.sessionManager = sessionManager;
     }
 
     @GetMapping("/")
-    public String home(){
-        return "index";
+    public String home(Model model , HttpSession session){
+        User user = sessionManager.getUserFromSession(session.getId());
+
+
+        if (user != null) {
+            session.setAttribute("authenticated", true);
+            List<ProductDto> allProducts = productService.findAllProducts();
+            model.addAttribute("products", allProducts);
+            return "index";
+        }else{
+         return "redirect:/login";
+        }
     }
 
     @GetMapping("/dashboard")
@@ -130,6 +144,8 @@ public class AuthController {
 
     @GetMapping("/login")
     public String showLoginForm(Model model){
+        UserLogin userLogin = new UserLogin();
+        model.addAttribute("userLogin", userLogin);
         return "login";
     }
 
@@ -156,5 +172,27 @@ public class AuthController {
         return "redirect:/register?success";
     }
 
+
+    @PostMapping("/auth/login")
+    public String loginUser(@Valid @ModelAttribute("userLogin") UserLogin userDto,
+                                  BindingResult result,
+                                  Model model , HttpSession session){
+        User user = userService.loginUser(userDto.getEmail(), userDto.getPassword());
+
+
+
+        if(result.hasErrors()){
+            model.addAttribute("userLogin", userDto);
+            return "/login";
+        }
+
+        if (user != null) {
+            sessionManager.createSession(session.getId(), user);
+            return "redirect:/";
+        } else {
+            model.addAttribute("error", "Invalid email or password, Please enter correct credential.");
+            return "/login"; // Return to the login page
+        }
+    }
 
 }

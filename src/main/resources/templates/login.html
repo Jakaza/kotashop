@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <!-- basic -->
@@ -71,7 +71,7 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="full">
-                            <a class="logo" href="index.html" style="color: white;">KotaMamas</a>
+                            <a class="logo" th:href="@{/}" style="color: white;">KotaMamas</a>
                         </div>
                     </div>
                     <div class="col-md-9">
@@ -79,7 +79,7 @@
                             <div class="right_header_info">
                                 <ul>
                                     <li class="dinone">Contact Us : <img style="margin-right: 15px;margin-left: 15px;" src="/images/phone_icon.png" alt="#"><a href="#">0711770423</a></li>
-                                    <li class="button_user"><a class="button active" href="#">Login</a><a class="button" href="#">Register</a></li>
+                                    <li class="button_user"><a class="button active" th:href="@{/login}">Login</a><a class="button" th:href="@{/register}">Register</a></li>
                                     <li>
                                         <button type="button" id="sidebarCollapse">
                                             <img src="/images/menu_icon.png" alt="#">
@@ -99,20 +99,37 @@
                 <div class="row col-cnter" >
                     <div class="col-md-5">
                         <div class="full">
+
+
+
                             <div id="main_slider" class="carousel vert slide" data-ride="carousel" data-interval="5000">
 
-                                <form class="custom-form">
+                                <div th:if="${error}" >
+                                    <p th:text="${error}" style="color:red;"></p>
+                                </div>
+
+
+                                <form class="custom-form" method="post" th:action="@{/auth/login}"  th:object="${userLogin}">
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        <div th:errors = "*{email}"  th:if="${#fields.hasErrors('email')}" style="color:red;">
+
+                                        </div>
+
+
+                                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                                      
                                     </div>
                                     <div class="mb-3">
                                         <label for="exampleInputPassword1" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword1">
+                                        <div th:errors = "*{password}"  th:if="${#fields.hasErrors('password')}" style="color:red;">
+
+                                        </div>
+                                        <input type="password" name="password" class="form-control" id="exampleInputPassword1">
                                     </div>
                                     <div class="mb-3 form-check">
                                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
+
                                         <label class="form-check-label" for="exampleCheck1">Check me out</label>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -129,28 +146,9 @@
 
 
 
-
         <!-- footer -->
         <fooetr>
             <div class="footer">
-                <div class="container-fluid">
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="footer_logo">
-                                <a href="index.html"><img src="images/logo1.jpg" alt="logo" /></a>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <ul class="lik">
-                                <li class="active"> <a href="index.html">Home</a></li>
-                                <li> <a href="about.html">Cart</a></li>
-                                <li> <a href="recipe.html">Orders</a></li>
-                                <li> <a href="contact.html">Contact us</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
                 <div class="copyright">
                     <div class="container">
                         <p>© 2024 All Rights Reserved.</p>
