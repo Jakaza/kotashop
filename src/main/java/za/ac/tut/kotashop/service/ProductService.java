@@ -10,5 +10,5 @@ public interface ProductService {
     void saveProduct(ProductDto productDto , MultipartFile file);
     void deleteProduct(Long productId);
     void editProduct(ProductDto productDto);
-    List<ProductDto> findAllCategories();
+    List<ProductDto> findAllProducts();
 }

@@ -50,7 +50,14 @@ public class AuthController {
     }
 
     @GetMapping("/admin/products")
-    public String adminProducts(){
+    public String adminProducts(Model model){
+
+        List<ProductDto> allProducts = productService.findAllProducts();
+
+        System.out.println(allProducts);
+
+        List<CategoryDto> allCategories = categoryService.findAllCategories();
+        model.addAttribute("categories", allCategories);
         return "viewAllProducts";
     }
 
@@ -72,6 +79,7 @@ public class AuthController {
             // You can add error messages to the model if needed
             return new RedirectView("/admin/products?error", true);
         }
+
 
         // Save the product and its image
         productService.saveProduct(productDto, file);

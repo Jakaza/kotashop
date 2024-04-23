@@ -20,8 +20,8 @@ public class Product {
     private String productDescription;
 
     @Lob
-    @Column(name = "product_image", columnDefinition = "bytea")
-    private byte[] productImage;
+    @Column(name = "product_image", columnDefinition = "MEDIUMBLOB")
+    private String productImage;
 
     @Column(name = "price")
     private int price;
@@ -39,7 +39,7 @@ public class Product {
         // Default constructor
     }
 
-    public Product(String productName, String productDescription, byte[] productImage, int price, Category category, LocalDate uploadedDate) {
+    public Product(String productName, String productDescription, String productImage, int price, Category category, LocalDate uploadedDate) {
         this.productName = productName;
         this.productDescription = productDescription;
         this.productImage = productImage;
@@ -74,11 +74,11 @@ public class Product {
         this.productDescription = productDescription;
     }
 
-    public byte[] getProductImage() {
+    public String getProductImage() {
         return productImage;
     }
 
-    public void setProductImage(byte[] productImage) {
+    public void setProductImage(String productImage) {
         this.productImage = productImage;
     }
 
@@ -112,7 +112,7 @@ public class Product {
                 "productId=" + productId +
                 ", productName='" + productName + '\'' +
                 ", productDescription='" + productDescription + '\'' +
-                ", productImage=" + Arrays.toString(productImage) +
+                ", productImage=" + productImage +
                 ", price=" + price +
                 ", category=" + category +
                 ", uploadedDate=" + uploadedDate +

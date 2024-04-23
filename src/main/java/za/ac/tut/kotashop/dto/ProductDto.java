@@ -1,6 +1,7 @@
 package za.ac.tut.kotashop.dto;
 
 import jakarta.validation.constraints.*;
+import za.ac.tut.kotashop.entity.Category;
 
 public class ProductDto {
 
@@ -20,6 +21,8 @@ public class ProductDto {
 
     @NotNull(message = "Category ID should not be empty")
     private Long categoryId;
+
+    private Category category;
 
     // Getters and setters
 
@@ -69,5 +72,13 @@ public class ProductDto {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
