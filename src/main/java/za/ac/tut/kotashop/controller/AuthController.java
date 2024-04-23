@@ -17,6 +17,7 @@ import za.ac.tut.kotashop.service.CategoryService;
 import za.ac.tut.kotashop.service.ProductService;
 import za.ac.tut.kotashop.service.UserService;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -51,13 +52,10 @@ public class AuthController {
 
     @GetMapping("/admin/products")
     public String adminProducts(Model model){
-
         List<ProductDto> allProducts = productService.findAllProducts();
-
-        System.out.println(allProducts);
-
         List<CategoryDto> allCategories = categoryService.findAllCategories();
         model.addAttribute("categories", allCategories);
+        model.addAttribute("products", allProducts);
         return "viewAllProducts";
     }
 

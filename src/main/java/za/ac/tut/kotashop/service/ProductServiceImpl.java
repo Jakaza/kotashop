@@ -73,6 +73,7 @@ public class ProductServiceImpl implements ProductService{
     private ProductDto mapToProductDto(Product product) {
         ProductDto productDto = new ProductDto();
         productDto.setProductId(product.getProductId());
+        productDto.setProductImage(product.getProductImage());
         productDto.setProductName(product.getProductName());
         productDto.setProductDescription(product.getProductDescription());
         productDto.setPrice(product.getPrice());
