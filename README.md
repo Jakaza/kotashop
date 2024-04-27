@@ -1,6 +1,10 @@
 
-##DB LINK
+# DB LINK
 https://phpmyadmin.freedb.tech/index.php?route=/database/structure&db=freedb_kotashop
+
+## Guide 
+
+https://www.youtube.com/watch?v=l0ZEGOsYm3E&list=PLbtI3_MArDOlnBkBS-O04_YNIaZG4yetn&index=18
 
 ## Customer
 ![Screenshot (1)](https://github.com/Jakaza/kotashop/assets/69904835/2a954df9-afc8-42c7-95ed-466d0bff9ad7)
