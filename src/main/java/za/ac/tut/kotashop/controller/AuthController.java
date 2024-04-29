@@ -15,6 +15,7 @@ import za.ac.tut.kotashop.dto.ProductDto;
 import za.ac.tut.kotashop.dto.UserDto;
 import za.ac.tut.kotashop.dto.UserLogin;
 import za.ac.tut.kotashop.entity.User;
+import za.ac.tut.kotashop.global.GlobalData;
 import za.ac.tut.kotashop.service.CategoryService;
 import za.ac.tut.kotashop.service.ProductService;
 import za.ac.tut.kotashop.service.UserService;
@@ -43,6 +44,7 @@ public class AuthController {
     public String home(Model model , HttpSession session){
         User user = sessionManager.getUserFromSession(session.getId());
 
+        model.addAttribute("cartCount", GlobalData.cart.size());
 
         if (user != null) {
             session.setAttribute("authenticated", true);
