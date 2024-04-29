@@ -3,6 +3,7 @@ package za.ac.tut.kotashop.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,13 +19,9 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-            name = "product",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> products;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderProduct> products = new ArrayList<>();
+
 
     @Column(name = "quantity")
     private int quantity;
@@ -33,12 +30,12 @@ public class Order {
     private LocalDateTime orderDate;
 
     public Order() {
-
+        this.orderId = null;
     }
 
     // Constructors, getters, and setters
     // Constructor with products list
-    public Order(User user, List<Product> products, int quantity, LocalDateTime orderDate) {
+    public Order(User user, List<OrderProduct> products, int quantity, LocalDateTime orderDate) {
         this.user = user;
         this.products = products;
         this.quantity = quantity;
@@ -61,11 +58,11 @@ public class Order {
         this.user = user;
     }
 
-    public List<Product> getProducts() {
+    public List<OrderProduct> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(List<OrderProduct> products) {
         this.products = products;
     }
 

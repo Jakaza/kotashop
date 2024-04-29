@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 import za.ac.tut.kotashop.dto.ProductDto;
 import za.ac.tut.kotashop.entity.Order;
+import za.ac.tut.kotashop.entity.OrderProduct;
 import za.ac.tut.kotashop.entity.Product;
 import za.ac.tut.kotashop.entity.User;
 import za.ac.tut.kotashop.global.GlobalData;
@@ -61,17 +62,23 @@ public class CartController {
 
     @PostMapping("/order/add")
     public String placeOrder(HttpSession session) {
-        List<Product> cart_products = new ArrayList<>();
-        for (Product product : GlobalData.cart) {
-            cart_products.add(product);
-        }
         User loggedInUser = sessionManager.getUserFromSession(session.getId());
+
         Order order = new Order();
         order.setUser(loggedInUser);
-        order.setProducts(cart_products);
         order.setOrderDate(LocalDateTime.now());
 
+        List<OrderProduct> orderProducts = new ArrayList<>();
+
+        for (Product product : GlobalData.cart) {
+            OrderProduct orderProduct = new OrderProduct();
+            orderProduct.setProduct(product);
+            orderProduct.setOrder(order);
+            orderProducts.add(orderProduct);
+        }
+        order.setProducts(orderProducts);
         orderService.saveOrder(order);
+        GlobalData.cart.clear();
         return "orderFeedBack";
     }
 
@@ -87,6 +94,26 @@ public class CartController {
         model.addAttribute("cartCount", GlobalData.cart.size());
 
         if (user != null) {
+
+            List<Order> userOrders = orderService.findOrdersByUser(user);
+
+            System.out.println("User Orders");
+
+            for (Order order : userOrders) {
+                System.out.println("Order ID: " + order.getOrderId());
+                System.out.println("Order Date: " + order.getOrderDate());
+                System.out.println("User: " + order.getUser().getFullname()); // Assuming getUsername() retrieves the username of the user associated with the order
+
+                System.out.println("Products:");
+
+                for (OrderProduct orderProduct : order.getProducts()) {
+                    System.out.println("  Product Name: " + orderProduct.getProduct().getProductName());
+                    System.out.println("  Price per unit: " + orderProduct.getProduct().getPrice());
+                }
+                System.out.println("-----------------------");
+            }
+
+
             List<ProductDto> allProducts = productService.findAllProducts();
             model.addAttribute("cartCount", GlobalData.cart.size());
             model.addAttribute("total", GlobalData.cart.stream().mapToDouble(Product::getPrice).sum());
