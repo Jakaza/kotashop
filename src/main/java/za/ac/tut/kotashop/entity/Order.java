@@ -3,6 +3,7 @@ package za.ac.tut.kotashop.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -17,9 +18,13 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @ManyToMany
+    @JoinTable(
+            name = "product",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<Product> products;
 
     @Column(name = "quantity")
     private int quantity;
@@ -27,10 +32,15 @@ public class Order {
     @Column(name = "order_date")
     private LocalDateTime orderDate;
 
-    // Getters and setters
-    public Order( User user, Product product, int quantity, LocalDateTime orderDate) {
+    public Order() {
+
+    }
+
+    // Constructors, getters, and setters
+    // Constructor with products list
+    public Order(User user, List<Product> products, int quantity, LocalDateTime orderDate) {
         this.user = user;
-        this.product = product;
+        this.products = products;
         this.quantity = quantity;
         this.orderDate = orderDate;
     }
@@ -51,12 +61,12 @@ public class Order {
         this.user = user;
     }
 
-    public Product getProduct() {
-        return product;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     public int getQuantity() {
@@ -75,4 +85,3 @@ public class Order {
         this.orderDate = orderDate;
     }
 }
-

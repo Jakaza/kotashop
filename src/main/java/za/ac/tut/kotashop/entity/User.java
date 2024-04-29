@@ -38,6 +38,9 @@ public class User {
     @Column(nullable=false)
     private String role;
 
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
+
     public User() {
         // Set default role to CUSTOMER
         this.role = "CUSTOMER";

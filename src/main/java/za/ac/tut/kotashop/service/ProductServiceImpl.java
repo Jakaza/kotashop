@@ -7,6 +7,7 @@ import za.ac.tut.kotashop.entity.Category;
 import za.ac.tut.kotashop.entity.Product;
 import za.ac.tut.kotashop.repository.CategoryRepository;
 import za.ac.tut.kotashop.repository.ProductRepository;
+import za.ac.tut.kotashop.utils.PasswordEncryptor;
 
 import java.io.File;
 import java.io.IOException;

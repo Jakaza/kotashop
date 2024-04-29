@@ -121,41 +121,10 @@
             <div class="product_listing_main">
                 <div class="row">
                     <br/>
-                    <h2 style="color: white">My Cart</h2>
+                    <h2 style="color: white">Order Placed Successfully</h2>
                     <br/>
-                    <table class="table table-dark">
-                        <thead>
-                        <tr>
-                            <th class="text-center">S.N.</th>
-                            <th class="text-center">Product Image</th>
-                            <th class="text-center">Product Name</th>
-                            <th class="text-center">Product Description</th>
-                            <th class="text-center">Unit Price</th>
-                            <th class="text-center" colspan="2">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody id="productTableBody">
-                        <!-- Products will be dynamically added here -->
-                        <tr th:each="product, i : ${cart}">
-                            <td th:text="${i.index + 1}"></td>
-                            <td><img img th:src="'data:image/jpeg;base64,' + ${product.productImage}"  style="height: 100px;"></td>
-                            <td th:text="${product.productName}"></td>
-                            <td th:text="${product.productDescription}"></td>
-                            <td th:text="'R' + ${product.price}"></td>
-                            <td>
-                                <form method="post" th:action="@{/cart/remove}"> <br>
-                                    <input type="hidden" name="id" th:value="${product.productId}">
-                                    <button class="btn btn-primary" type="submit">Remove</button> <br>
-                                </form>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
 
-                    <form method="post" th:action="@{/order/add}"> <br>
-                        <label style="color: white; font-size: 18px;" th:text="'Total Amount To Pay Is : R' + ${total}"></label> <br> <br>
-                        <button class="btn btn-primary" type="submit">Place Order</button> <br>
-                    </form>
+                    <a href="/">Go Back To Home Page</a>
 
                 </div>
             </div>
