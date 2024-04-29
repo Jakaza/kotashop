@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import za.ac.tut.kotashop.dto.UserDto;
 import za.ac.tut.kotashop.entity.User;
 import za.ac.tut.kotashop.repository.UserRepository;
+import za.ac.tut.kotashop.utils.PasswordEncryptor;
 
 import java.util.List;
 
@@ -29,14 +30,17 @@ public class UserServiceImpl implements UserService {
         user.setTownship(userDto.getTownship());
         user.setHousenumber(userDto.getHousenumber());
         user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(PasswordEncryptor.hashPassword(userDto.getPassword()));
         userRepository.save(user);
     }
 
     public User loginUser(String email, String password) {
         User user = userRepository.findByEmail(email);
-        if (user != null && user.getPassword().equals(password)) {
-            return user;
+        if (user != null) {
+            String storedHashedPassword = user.getPassword();
+            if (PasswordEncryptor.verifyPassword(password, storedHashedPassword)) {
+                return user;
+            }
         }
         return null;
     }
