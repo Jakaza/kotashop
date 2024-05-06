@@ -4,21 +4,21 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
-import za.ac.tut.kotashop.dto.CategoryDto;
-import za.ac.tut.kotashop.dto.ProductDto;
-import za.ac.tut.kotashop.dto.UserDto;
-import za.ac.tut.kotashop.dto.UserLogin;
+import za.ac.tut.kotashop.dto.*;
 import za.ac.tut.kotashop.entity.User;
 import za.ac.tut.kotashop.global.GlobalData;
 import za.ac.tut.kotashop.service.CategoryService;
+import za.ac.tut.kotashop.service.OrderService;
 import za.ac.tut.kotashop.service.ProductService;
 import za.ac.tut.kotashop.service.UserService;
+import za.ac.tut.kotashop.utils.ApplicationProperties;
 import za.ac.tut.kotashop.utils.SessionManager;
 
 import java.util.List;
@@ -32,12 +32,14 @@ public class AuthController {
     private CategoryService categoryService;
     private ProductService productService;
     private SessionManager sessionManager;
+    private OrderService orderService;
 
-    public AuthController(UserService userService , CategoryService categoryService , ProductService productService, SessionManager sessionManager) {
+    public AuthController(UserService userService , CategoryService categoryService , ProductService productService, SessionManager sessionManager ,OrderService orderService) {
         this.userService = userService;
         this.categoryService = categoryService;
         this.productService = productService;
         this.sessionManager = sessionManager;
+        this.orderService = orderService;
     }
 
     @GetMapping("/")
@@ -62,7 +64,11 @@ public class AuthController {
     }
 
     @GetMapping("/admin/customers")
-    public String adminCustomers(){
+    public String adminCustomers(Model model){
+
+        List<UserDto> customers = userService.findAllUsers();
+
+        model.addAttribute("customers", customers);
         return "viewCustomers";
     }
 
@@ -126,7 +132,29 @@ public class AuthController {
     }
 
     @GetMapping("/admin/orders")
-    public String adminOrders(){
+    public String adminOrders( Model model){
+
+        List<OrderDto> allOrders = orderService.findAllOrders();
+
+//        for (OrderDto orderDto : allOrders) {
+//            System.out.println("Order ID: " + orderDto.getOrderId());
+//            System.out.println("User ID: " + orderDto.getUserId());
+//            System.out.println("Username: " + orderDto.getUserName());
+//            System.out.println("Address: " + orderDto.getAddress());
+//            System.out.println("Order Date: " + orderDto.getOrderDate());
+//            // Display order products
+//            List<OrderProductDto> products = orderDto.getProducts();
+//            for (OrderProductDto product : products) {
+//                System.out.println("Product ID: " + product.getProductId());
+//                System.out.println("Product Name: " + product.getProductName());
+//                System.out.println("Product Description: " + product.getProductDescription());
+//                // Add more product details as needed
+//            }
+//            System.out.println("----------------------------------");
+//        }
+
+        model.addAttribute("allOrders", allOrders);
+
         return "viewAllOrders";
     }
 
@@ -180,8 +208,13 @@ public class AuthController {
                                   BindingResult result,
                                   Model model , HttpSession session){
         User user = userService.loginUser(userDto.getEmail(), userDto.getPassword());
-
-
+        if (userDto.getEmail().equals("admin@gmail.com") && userDto.getPassword().equals("admin")) {
+            User amdinUser = new User();
+            amdinUser.setEmail("admin@gamil.com");
+            amdinUser.setPassword("admin");
+            sessionManager.createSession(session.getId(), amdinUser);
+            return "redirect:/dashboard";
+        }
 
         if(result.hasErrors()){
             model.addAttribute("userLogin", userDto);

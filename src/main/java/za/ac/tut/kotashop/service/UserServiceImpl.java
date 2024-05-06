@@ -9,6 +9,7 @@ import za.ac.tut.kotashop.repository.UserRepository;
 import za.ac.tut.kotashop.utils.PasswordEncryptor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -52,6 +53,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> findAllUsers() {
-        return List.of();
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    private UserDto convertToDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setFullname(user.getFullname());
+        userDto.setSurname(user.getSurname());
+        userDto.setCountry(user.getCountry());
+        userDto.setTownship(user.getTownship());
+        userDto.setHousenumber(user.getHousenumber());
+        userDto.setEmail(user.getEmail());
+        userDto.setPassword(user.getPassword());
+        return userDto;
     }
 }

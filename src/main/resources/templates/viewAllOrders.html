@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
 <head>
   <title>Admin</title>
   <head>
@@ -32,7 +34,7 @@
 
 
 
-          <!-- Sidebar -->
+            <!-- Sidebar -->
             <div class="sidebar" id="mySidebar" >
                 <div class="side-header">
                     <img src="/admin/images/logo.png" width="120" height="120" alt="Swiss Collection">
@@ -44,7 +46,6 @@
                 <a href="/admin/categories"   ><i class="fa fa-th-large"></i> Category</a>
                 <a href="/admin/products"  ><i class="fa fa-th"></i> Products</a>
                 <a href="/admin/orders" ><i class="fa fa-list"></i> Orders</a>
-                <a href="/admin/order" ><i class="fa fa-list"></i> Each Orders</a>
 
                 <!---->
             </div>
@@ -60,23 +61,58 @@
               
 <div id="ordersBtn" >
   <h2>Order Details</h2>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>O.N.</th>
-        <th>Customer</th>
-        <th>Contact</th>
-        <th>OrderDate</th>
-        <th>Payment Method</th>
-        <th>Order Status</th>
-        <th>Payment Status</th>
-        <th>More Details</th>
-      </tr>
-    </thead>
-    <tbody id="orderTableBody">
-      <!-- Orders will be dynamically added here -->
-    </tbody>
-  </table>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>O.N.</th>
+            <th>Customer</th>
+            <th>Address</th>
+            <th>Order Date</th>
+            <th>Actions</th> <!-- New column for the button -->
+        </tr>
+        </thead>
+        <tbody id="orderTableBody">
+        <!-- Orders will be dynamically added here -->
+        <tr th:each="orderDto : ${allOrders}">
+            <td th:text="${orderDto.orderId}"></td>
+            <td th:text="${orderDto.userName}"></td>
+            <td th:text="${orderDto.address}"></td>
+            <td th:text="${orderDto.orderDated}"></td>
+            <td> <!-- Actions column -->
+                <button class="btn btn-link" type="button" data-toggle="collapse" th:data-target="'#productsCollapse' + ${orderDto.orderId}" aria-expanded="false" aria-controls="'productsCollapse' + ${orderDto.orderId}">
+                    Show Products
+                </button>
+            </td>
+        </tr>
+        <!-- Sub-rows for order products -->
+        <tr th:each="orderDto : ${allOrders}">
+            <td colspan="5"> <!-- Spanning all columns -->
+                <div class="collapse" th:id="'productsCollapse' + ${orderDto.orderId}">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Product Name</th>
+                            <th>Product Description</th>
+                            <!-- Add more columns if needed -->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Iterate over order products and display details -->
+                        <tr th:each="product : ${orderDto.products}">
+                            <td th:text="${product.productId}"></td>
+                            <td th:text="${product.productName}"></td>
+                            <td th:text="${product.productDescription}"></td>
+                            <!-- Add more columns if needed -->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
    
 </div>
 
@@ -117,49 +153,3 @@
 
 
 
-  <script>
-    // Array of fake orders
-    var fakeOrders = [
-      { order_id: 1, delivered_to: "John Doe", phone_no: "1234567890", order_date: "2024-04-22", pay_method: "Credit Card", order_status: 0, pay_status: 0 },
-      { order_id: 2, delivered_to: "Jane Smith", phone_no: "9876543210", order_date: "2024-04-23", pay_method: "PayPal", order_status: 1, pay_status: 1 },
-      // Add more fake orders as needed
-    ];
-  
-    // Function to populate the table with fake orders
-    function populateTable() {
-      var tableBody = document.getElementById("orderTableBody");
-  
-      // Loop through fake orders and create table rows
-      for (var i = 0; i < fakeOrders.length; i++) {
-        var order = fakeOrders[i];
-        var orderStatusButton = order.order_status === 0 ? "<button class='btn btn-danger' onclick='ChangeOrderStatus(" + order.order_id + ")'>Pending</button>" : "<button class='btn btn-success' onclick='ChangeOrderStatus(" + order.order_id + ")'>Delivered</button>";
-        var payStatusButton = order.pay_status === 0 ? "<button class='btn btn-danger' onclick='ChangePay(" + order.order_id + ")'>Unpaid</button>" : "<button class='btn btn-success' onclick='ChangePay(" + order.order_id + ")'>Paid</button>";
-        var moreDetailsLink = "<a class='btn btn-primary' href='./adminView/viewEachOrder.php?orderID=" + order.order_id + "'>View</a>";
-  
-        var row = "<tr>" +
-                    "<td>" + order.order_id + "</td>" +
-                    "<td>" + order.delivered_to + "</td>" +
-                    "<td>" + order.phone_no + "</td>" +
-                    "<td>" + order.order_date + "</td>" +
-                    "<td>" + order.pay_method + "</td>" +
-                    "<td>" + orderStatusButton + "</td>" +
-                    "<td>" + payStatusButton + "</td>" +
-                    "<td>" + moreDetailsLink + "</td>" +
-                  "</tr>";
-        tableBody.innerHTML += row;
-      }
-    }
-  
-    // Call the function to populate the table
-    populateTable();
-  
-    // Function to change order status (dummy function for simulation)
-    function ChangeOrderStatus(orderId) {
-      console.log("Changing order status for order ID: " + orderId);
-    }
-  
-    // Function to change payment status (dummy function for simulation)
-    function ChangePay(orderId) {
-      console.log("Changing payment status for order ID: " + orderId);
-    }
-  </script>

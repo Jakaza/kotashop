@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
 <head>
   <title>Admin</title>
   <head>
@@ -43,7 +45,6 @@
                 <a href="/admin/categories"   ><i class="fa fa-th-large"></i> Category</a>
                 <a href="/admin/products"  ><i class="fa fa-th"></i> Products</a>
                 <a href="/admin/orders" ><i class="fa fa-list"></i> Orders</a>
-                <a href="/admin/order" ><i class="fa fa-list"></i> Each Orders</a>
 
                 <!---->
             </div>
@@ -64,14 +65,21 @@
     <thead>
       <tr>
         <th class="text-center">S.N.</th>
-        <th class="text-center">Username</th>
+        <th class="text-center">FirstName</th>
+        <th class="text-center">LastName</th>
         <th class="text-center">Email</th>
-        <th class="text-center">Contact Number</th>
-        <th class="text-center">Joining Date</th>
+        <th class="text-center">Address</th>
       </tr>
     </thead>
     <tbody id="userTableBody">
-      <!-- Users will be dynamically added here -->
+    <!-- Iterate over the list of users and populate the table dynamically -->
+    <tr th:each="customer, i : ${customers}">
+        <td th:text="${i.index + 1}"></td>
+        <td class="text-center" th:text="${customer.fullname}"></td>
+        <td class="text-center" th:text="${customer.surname}"></td>
+        <td class="text-center" th:text="${customer.email}"></td>
+        <td class="text-center" th:text="${customer.country} +' , '+  ${customer.township} +' , '+ ${customer.housenumber}"></td>
+    </tr>
     </tbody>
   </table>
 </div>
@@ -110,37 +118,3 @@
 
 
 
-
-<script>
-  // Array of fake users
-  var fakeUsers = [
-    { first_name: "John", last_name: "Doe", email: "john@example.com", contact_no: "1234567890", registered_at: "2023-01-01" },
-    { first_name: "Jane", last_name: "Doe", email: "jane@example.com", contact_no: "9876543210", registered_at: "2023-02-01" },
-    { first_name: "Alice", last_name: "Smith", email: "alice@example.com", contact_no: "5555555555", registered_at: "2023-03-01" },
-    { first_name: "Bob", last_name: "Johnson", email: "bob@example.com", contact_no: "9999999999", registered_at: "2023-04-01" },
-    { first_name: "Eve", last_name: "Taylor", email: "eve@example.com", contact_no: "1111111111", registered_at: "2023-05-01" }
-  ];
-
-  // Function to populate the table with fake users
-  function populateTable() {
-    var tableBody = document.getElementById("userTableBody");
-
-    // Clear existing table rows
-    tableBody.innerHTML = "";
-
-    // Loop through fake users and create table rows
-    for (var i = 0; i < fakeUsers.length; i++) {
-      var row = "<tr>" +
-                  "<td>" + (i + 1) + "</td>" +
-                  "<td>" + fakeUsers[i].first_name + " " + fakeUsers[i].last_name + "</td>" +
-                  "<td>" + fakeUsers[i].email + "</td>" +
-                  "<td>" + fakeUsers[i].contact_no + "</td>" +
-                  "<td>" + fakeUsers[i].registered_at + "</td>" +
-                "</tr>";
-      tableBody.innerHTML += row;
-    }
-  }
-
-  // Call the function to populate the table
-  populateTable();
-</script>

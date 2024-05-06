@@ -1,5 +1,6 @@
 package za.ac.tut.kotashop.service;
 
+import za.ac.tut.kotashop.dto.OrderDto;
 import za.ac.tut.kotashop.entity.Order;
 import za.ac.tut.kotashop.entity.User;
 
@@ -10,7 +11,7 @@ public interface OrderService {
     void deleteOrder(Long orderId);
     void editOrder(Order order);
     Order findById(Long id);
-    List<Order> findAllOrders();
+    List<OrderDto> findAllOrders();
 
     List<Order> findOrdersByUser(User user);
 }
