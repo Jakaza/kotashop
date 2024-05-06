@@ -3,7 +3,7 @@
 
 - ### Intilj IDE
 - ### Java jdk version 17++
-- ### MySQL
+- ### MariaDB
 
 > ### Default Admin Details to Login
 > - email : admin@gmail.com

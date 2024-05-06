@@ -14,4 +14,6 @@ public interface OrderService {
     List<OrderDto> findAllOrders();
 
     List<Order> findOrdersByUser(User user);
+
+    List<OrderDto> findOrdersByUserId(Long userId);
 }

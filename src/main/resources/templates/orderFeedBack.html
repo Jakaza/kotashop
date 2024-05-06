@@ -85,7 +85,7 @@
                                     <li class="dinone">Contact Us : <img style="margin-right: 15px;margin-left: 15px;" src="/images/phone_icon.png" alt="#"><a href="#">0711770423</a></li>
 
                                     <li class="button_user">
-                                        <a class="button active" th:href="@{/orders}">View Orders  </a>
+                                        <a class="button active" th:href="@{/orders(id=${user_id})}">View Your Order</a>
                                     </li>
 
 
@@ -118,10 +118,7 @@
                                                     <h3>Order<br>  Placed Successfully</h3>
                                                     <p>Happy Customer, We hope you will enjoy our food</p>
 
-                                                    <form method="get" th:action="@{/cart/add}">
-                                                        <input type="hidden" name="id" th:value="${user.user_id}">
-                                                        <button class="btn btn-cart main_bt_border" type="submit">Order View Your Orders</button>
-                                                    </form>
+                                                    <a class="button active" th:href="@{/orders(id=${user_id})}">View Your Order</a>
 
                                                 </div>
                                             </div>

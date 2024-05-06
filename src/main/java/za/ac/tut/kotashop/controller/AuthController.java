@@ -51,7 +51,11 @@ public class AuthController {
         if (user != null) {
             session.setAttribute("authenticated", true);
             List<ProductDto> allProducts = productService.findAllProducts();
+            List<OrderDto> customerOrders = orderService.findOrdersByUserId(user.getId());
+            int ordersTotal = customerOrders.size();
+            model.addAttribute("ordersTotal", ordersTotal);
             model.addAttribute("products", allProducts);
+            model.addAttribute("user_id", user.getId());
             return "index";
         }else{
          return "redirect:/login";

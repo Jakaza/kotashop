@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
+import za.ac.tut.kotashop.dto.OrderDto;
+import za.ac.tut.kotashop.dto.OrderProductDto;
 import za.ac.tut.kotashop.dto.ProductDto;
 import za.ac.tut.kotashop.entity.Order;
 import za.ac.tut.kotashop.entity.OrderProduct;
@@ -61,7 +63,7 @@ public class CartController {
 
 
     @PostMapping("/order/add")
-    public String placeOrder(HttpSession session) {
+    public String placeOrder(HttpSession session, Model model) {
         User loggedInUser = sessionManager.getUserFromSession(session.getId());
 
         Order order = new Order();
@@ -79,12 +81,32 @@ public class CartController {
         order.setProducts(orderProducts);
         orderService.saveOrder(order);
         GlobalData.cart.clear();
+
+        if (loggedInUser != null) {
+            model.addAttribute("user_id", loggedInUser.getId());
+        }
+
         return "orderFeedBack";
     }
 
+    @GetMapping("/cutomer/orders")
+    public String viewCustomerOrders(@RequestParam("id") Long userId, Model model) {
+        List<OrderDto> customerOrders = orderService.findOrdersByUserId(userId);
+        int ordersTotal = customerOrders.size();
+        model.addAttribute("ordersTotal", ordersTotal);
+        model.addAttribute("allOrders", customerOrders);
+        return "customerOrders"; // Assuming "customerOrders.html" is your view template
+    }
 
 
-
+    @GetMapping("/orders")
+    public String viewOrders(@RequestParam("id") Long userId, Model model) {
+        List<OrderDto> customerOrders = orderService.findOrdersByUserId(userId);
+        int ordersTotal = customerOrders.size();
+        model.addAttribute("allOrders", customerOrders);
+        model.addAttribute("ordersTotal", ordersTotal);
+        return "customerOrders";
+    }
 
     @GetMapping("/cart")
     public String getCart(Model model , HttpSession session){
@@ -96,22 +118,22 @@ public class CartController {
         if (user != null) {
 
             List<Order> userOrders = orderService.findOrdersByUser(user);
+            model.addAttribute("user_id", user.getId());
+//            System.out.println("User Orders");
 
-            System.out.println("User Orders");
-
-            for (Order order : userOrders) {
-                System.out.println("Order ID: " + order.getOrderId());
-                System.out.println("Order Date: " + order.getOrderDate());
-                System.out.println("User: " + order.getUser().getFullname()); // Assuming getUsername() retrieves the username of the user associated with the order
-
-                System.out.println("Products:");
-
-                for (OrderProduct orderProduct : order.getProducts()) {
-                    System.out.println("  Product Name: " + orderProduct.getProduct().getProductName());
-                    System.out.println("  Price per unit: " + orderProduct.getProduct().getPrice());
-                }
-                System.out.println("-----------------------");
-            }
+//            for (Order order : userOrders) {
+//                System.out.println("Order ID: " + order.getOrderId());
+//                System.out.println("Order Date: " + order.getOrderDate());
+//                System.out.println("User: " + order.getUser().getFullname()); // Assuming getUsername() retrieves the username of the user associated with the order
+//
+//                System.out.println("Products:");
+//
+//                for (OrderProduct orderProduct : order.getProducts()) {
+//                    System.out.println("  Product Name: " + orderProduct.getProduct().getProductName());
+//                    System.out.println("  Price per unit: " + orderProduct.getProduct().getPrice());
+//                }
+//                System.out.println("-----------------------");
+//            }
 
 
             List<ProductDto> allProducts = productService.findAllProducts();

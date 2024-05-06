@@ -84,4 +84,12 @@ public class OrderServiceImpl implements OrderService{
     public List<Order> findOrdersByUser(User user) {
         return orderRepository.findByUser(user);
     }
+
+    @Override
+    public List<OrderDto> findOrdersByUserId(Long userId) {
+        List<Order> orders = orderRepository.findByUserId(userId);
+        return orders.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
 }
