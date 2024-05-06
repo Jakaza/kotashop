@@ -230,4 +230,11 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        String sessionId = session.getId();
+        sessionManager.removeSession(sessionId);
+        return "redirect:/login";
+    }
+
 }

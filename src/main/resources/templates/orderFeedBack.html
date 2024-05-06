@@ -103,32 +103,65 @@
         </header>
         <!-- end header -->
 
-        <!-- section -->
-        <section class="resip_section" id="main_products_con">
+        <!-- start slider section -->
+        <div class="slider_section">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="ourheading">
+                        <div class="full">
+                            <div id="main_slider" class="carousel vert slide" data-ride="carousel" data-interval="5000">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="slider_cont">
+                                                    <h3>Order<br>  Placed Successfully</h3>
+                                                    <p>Happy Customer, We hope you will enjoy our food</p>
 
+                                                    <form method="get" th:action="@{/cart/add}">
+                                                        <input type="hidden" name="id" th:value="${user.user_id}">
+                                                        <button class="btn btn-cart main_bt_border" type="submit">Order View Your Orders</button>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <div class="slider_image full text_align_center">
+                                                    <img class="img-responsive" src="/images/kota.png" alt="#" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="slider_cont">
+                                                    <h3>Order<br>  Placed Successfully</h3>
+                                                    <p>Happy Customer, We hope you will enjoy our food</p>
+                                                    <a class="main_bt_border" href="/">Order Again</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <div class="slider_image full text_align_center">
+                                                    <img class="img-responsive" src="/images/kota.png" alt="#" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#main_slider" role="button" data-slide="prev">
+                                    <i class="fa fa-angle-up"></i>
+                                </a>
+                                <a class="carousel-control-next" href="#main_slider" role="button" data-slide="next">
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-
-
-        <div class="product-listing__index" >
-            <div class="product_listing_main">
-                <div class="row">
-                    <br/>
-                    <h2 style="color: white">Order Placed Successfully</h2>
-                    <br/>
-
-                    <a href="/">Go Back To Home Page</a>
-
-                </div>
-            </div>
         </div>
+        <!-- end slider section -->
 
         <!-- footer -->
         <fooetr>
