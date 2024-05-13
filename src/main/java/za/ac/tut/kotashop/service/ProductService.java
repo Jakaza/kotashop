@@ -13,4 +13,6 @@ public interface ProductService {
     void editProduct(ProductDto productDto);
     Product findById(Long id);
     List<ProductDto> findAllProducts();
+
+    List<Product> getAllProductsWithoutImage();
 }

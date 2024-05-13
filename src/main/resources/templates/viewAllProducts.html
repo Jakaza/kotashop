@@ -64,7 +64,6 @@
                       <th class="text-center">Product Name</th>
                       <th class="text-center">Product Description</th>
                       <th class="text-center">Unit Price</th>
-                      <th class="text-center" colspan="2">Action</th>
                     </tr>
                   </thead>
                   <tbody id="productTableBody">
@@ -75,11 +74,6 @@
                         <td th:text="${product.productName}"></td>
                         <td th:text="${product.productDescription}"></td>
                         <td th:text="'R' + ${product.price}"></td>
-                        <td>
-                            <button class="btn btn-primary" style="height: 40px" th:onclick="'itemEditForm(' + ${i.index} + ')'">Edit</button>
-                            <button class="btn btn-danger" style="height: 40px" th:onclick="'itemDelete(' + ${i.index} + ')'">Delete</button>
-                        </td>
-
                     </tr>
                   </tbody>
                 </table>

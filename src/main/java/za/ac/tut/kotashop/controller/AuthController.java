@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 import za.ac.tut.kotashop.dto.*;
+import za.ac.tut.kotashop.entity.Category;
+import za.ac.tut.kotashop.entity.Product;
 import za.ac.tut.kotashop.entity.User;
 import za.ac.tut.kotashop.global.GlobalData;
 import za.ac.tut.kotashop.service.CategoryService;
@@ -63,7 +65,18 @@ public class AuthController {
     }
 
     @GetMapping("/dashboard")
-    public String adminHome(){
+    public String adminHome(Model model){
+
+        List<Product> products = productService.getAllProductsWithoutImage();
+        List<CategoryDto> categories = categoryService.findAllCategories();
+        List<UserDto> users = userService.findAllUsers();
+        List<OrderDto> orders = orderService.findAllOrders();
+
+        model.addAttribute("totalProducts", products.size());
+        model.addAttribute("totalCategories", categories.size());
+        model.addAttribute("totalUsers", users.size());
+        model.addAttribute("totalOrders", orders.size());
+
         return "dashboard";
     }
 
@@ -134,6 +147,7 @@ public class AuthController {
         categoryService.deleteCategory(categoryId);
         return new RedirectView("/admin/categories?success", true);
     }
+
 
     @GetMapping("/admin/orders")
     public String adminOrders( Model model){

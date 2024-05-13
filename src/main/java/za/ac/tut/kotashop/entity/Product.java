@@ -40,6 +40,15 @@ public class Product {
         // Default constructor
     }
 
+    public Product(Long productId, String productName, String productDescription, int price, Category category, LocalDate uploadedDate) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.price = price;
+        this.category = category;
+        this.uploadedDate = uploadedDate;
+    }
+
     public Product(String productName, String productDescription, String productImage, int price, Category category, LocalDate uploadedDate) {
         this.productName = productName;
         this.productDescription = productDescription;
