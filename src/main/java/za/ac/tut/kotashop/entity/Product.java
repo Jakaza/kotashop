@@ -20,8 +20,7 @@ public class Product {
     @Column(name = "product_desc", columnDefinition = "TEXT")
     private String productDescription;
 
-    @Lob
-    @Column(name = "product_image", columnDefinition = "MEDIUMBLOB")
+    @Column(name = "product_image_path", columnDefinition = "TEXT")
     private String productImage;
 
     @Column(name = "price")
