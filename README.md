@@ -3,7 +3,11 @@
 
 - ### Intilj IDE
 - ### Java jdk version 17++
-- ### MariaDB
+- ### PostgreSQL
+- login details
+> - email : vayedog391@rencr.com
+> - password : Vayedog391@rencr.com
+> - https://console.neon.tech/ 
 
 > ### Default Admin Details to Login
 > - email : admin@gmail.com
