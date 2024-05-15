@@ -70,7 +70,7 @@
                     <!-- Products will be dynamically added here -->
                     <tr th:each="product, i : ${products}">
                         <td th:text="${i.index + 1}"></td>
-                        <td><img img th:src="'data:image/jpeg;base64,' + ${product.productImage}"  style="height: 100px;"></td>
+                        <td><img loading="lazy" th:src="${product.getFileLocation}"  style="height: 100px;"></td>
                         <td th:text="${product.productName}"></td>
                         <td th:text="${product.productDescription}"></td>
                         <td th:text="'R' + ${product.price}"></td>

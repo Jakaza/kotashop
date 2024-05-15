@@ -1,5 +1,6 @@
 package za.ac.tut.kotashop.dto;
 
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.*;
 import za.ac.tut.kotashop.entity.Category;
 
@@ -25,6 +26,11 @@ public class ProductDto {
     private Category category;
 
     // Getters and setters
+
+    @Transient
+    public String getFileLocation(){
+        return "/uploads/products/" + productId + "/" + productImage;
+    }
 
     public Long getProductId() {
         return productId;

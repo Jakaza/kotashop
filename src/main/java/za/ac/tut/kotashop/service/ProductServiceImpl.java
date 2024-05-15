@@ -2,6 +2,7 @@ package za.ac.tut.kotashop.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import za.ac.tut.kotashop.config.StorageProperty;
 import za.ac.tut.kotashop.dto.ProductDto;
 import za.ac.tut.kotashop.entity.Category;
 import za.ac.tut.kotashop.entity.Product;
@@ -11,10 +12,12 @@ import za.ac.tut.kotashop.utils.PasswordEncryptor;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,10 +25,13 @@ public class ProductServiceImpl implements ProductService{
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private Path uploadsLocation;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
+
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, CategoryRepository categoryRepository1, StorageProperty storageProperty) {
         this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
+        this.categoryRepository = categoryRepository1;
+        this.uploadsLocation = Paths.get(storageProperty.getUploadsLocation());
     }
 
     @Override
@@ -33,22 +39,32 @@ public class ProductServiceImpl implements ProductService{
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("File is null or empty.");
         }
+
+        String imageName = file.getOriginalFilename();
         Product product = new Product();
         product.setProductName(productDto.getProductName());
         product.setPrice(productDto.getPrice());
         product.setProductDescription(productDto.getProductDescription());
-
+        product.setProductImage(imageName);
         Optional<Category> categoryOptional = categoryRepository.findById(productDto.getCategoryId());
         Category category = categoryOptional.orElseThrow(() -> new IllegalArgumentException("Category not found"));
         product.setCategory(category);
-        try {
-            product.setProductImage(Base64.getEncoder().encodeToString(file.getBytes()));
-        } catch (IOException e) {
-            // Log the error and rethrow it as a runtime exception
-            throw new RuntimeException("Failed to read file content", e);
+        Product saved = productRepository.save(product);
+        String savedID = String.valueOf(saved.getProductId());
+        Path newPath = uploadsLocation.resolve(savedID);
+        if(!Files.exists(newPath)){
+            try {
+                Files.createDirectories(newPath);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
-        // Save the product to the database
-        productRepository.save(product);
+        Path destination = newPath.resolve(Paths.get(Objects.requireNonNull(imageName))).normalize().toAbsolutePath();
+        try (InputStream inputStream = file.getInputStream()){
+            Files.copy(inputStream, destination, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

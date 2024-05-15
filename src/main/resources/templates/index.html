@@ -204,7 +204,7 @@
 
 <div class="product_img">  
     <a href="/products/artisan-cheese-hamper">
-    	<img img th:src="'data:image/jpeg;base64,' + ${product.productImage}" loading="lazy" >
+    	<img  loading="lazy" th:src="${product.getFileLocation}" >
     </a>
 </div>
 
@@ -228,25 +228,6 @@
   
 </div>
 </div>
-
-
-    
-    
-    
-
-
-   
-    
-      
-    
-    
-    
-
-
-
-
-
-
 
 
 </div></div>   

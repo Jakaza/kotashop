@@ -23,6 +23,7 @@ import za.ac.tut.kotashop.service.UserService;
 import za.ac.tut.kotashop.utils.ApplicationProperties;
 import za.ac.tut.kotashop.utils.SessionManager;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -66,6 +67,8 @@ public class AuthController {
 
     @GetMapping("/dashboard")
     public String adminHome(Model model){
+
+        
 
         List<Product> products = productService.getAllProductsWithoutImage();
         List<CategoryDto> categories = categoryService.findAllCategories();
@@ -119,7 +122,11 @@ public class AuthController {
 
 
         // Save the product and its image
-        productService.saveProduct(productDto, file);
+        try {
+            productService.saveProduct(productDto, file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return new RedirectView("/admin/products?success", true);
     }

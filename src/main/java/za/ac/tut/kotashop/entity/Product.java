@@ -57,6 +57,12 @@ public class Product {
         this.uploadedDate = uploadedDate;
     }
 
+    @Transient
+    public String getFileLocation(){
+        return "/uploads/products/" + productId + "/" + productImage;
+    }
+
+
     // Getters and setters
 
     public Long getProductId() {
