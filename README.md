@@ -7,7 +7,7 @@
 
 > ### Default Admin Details to Login
 > - email : admin@gmail.com
-> - password : admin
+> - password : TUT2024
 
 ## System Functionality 
  - ### Admin

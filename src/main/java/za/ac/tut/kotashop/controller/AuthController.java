@@ -48,64 +48,22 @@ public class AuthController {
     @GetMapping("/")
     public String home(Model model , HttpSession session){
         User user = sessionManager.getUserFromSession(session.getId());
-
-        model.addAttribute("cartCount", GlobalData.cart.size());
-
-        if (user != null) {
-            session.setAttribute("authenticated", true);
-            List<ProductDto> allProducts = productService.findAllProducts();
-            List<OrderDto> customerOrders = orderService.findOrdersByUserId(user.getId());
-            int ordersTotal = customerOrders.size();
-            model.addAttribute("ordersTotal", ordersTotal);
-            model.addAttribute("products", allProducts);
-            model.addAttribute("user_id", user.getId());
-            return "index";
+        if(user != null){
+            if(user.getRole().equals("ADMIN")){
+                return "redirect:/dashboard";
+            }else{
+                return "redirect:/kotashop";
+            }
         }else{
-         return "redirect:/login";
+            return "redirect:/login";
         }
     }
 
-    @GetMapping("/dashboard")
-    public String adminHome(Model model){
-
-        
-
-        List<Product> products = productService.getAllProductsWithoutImage();
-        List<CategoryDto> categories = categoryService.findAllCategories();
-        List<UserDto> users = userService.findAllUsers();
-        List<OrderDto> orders = orderService.findAllOrders();
-
-        model.addAttribute("totalProducts", products.size());
-        model.addAttribute("totalCategories", categories.size());
-        model.addAttribute("totalUsers", users.size());
-        model.addAttribute("totalOrders", orders.size());
-
-        return "dashboard";
-    }
-
-    @GetMapping("/admin/customers")
-    public String adminCustomers(Model model){
-
-        List<UserDto> customers = userService.findAllUsers();
-
-        model.addAttribute("customers", customers);
-        return "viewCustomers";
-    }
-
-    @GetMapping("/admin/products")
-    public String adminProducts(Model model){
-        List<ProductDto> allProducts = productService.findAllProducts();
-        List<CategoryDto> allCategories = categoryService.findAllCategories();
-        model.addAttribute("categories", allCategories);
-        model.addAttribute("products", allProducts);
-        return "viewAllProducts";
-    }
 
     @PostMapping("/admin/products/create")
     public RedirectView adminCreateProduct(@Valid @ModelAttribute("product") ProductDto productDto,
                                      BindingResult result,
                                      Model model , @RequestParam("file") MultipartFile file){
-
 
         if (result.hasErrors()) {
             // Handle validation errors
@@ -133,12 +91,7 @@ public class AuthController {
 
 
 
-    @GetMapping("/admin/categories")
-    public String adminCategories(Model model){
-        List<CategoryDto> allCategories = categoryService.findAllCategories();
-        model.addAttribute("categories", allCategories);
-        return "viewCategories";
-    }
+
 
     @PostMapping("/admin/category/create")
     public String adminCreateCategory(@Valid @ModelAttribute("category") CategoryDto categoryDto,
@@ -153,34 +106,6 @@ public class AuthController {
     public RedirectView deleteCategory(@PathVariable Long categoryId) {
         categoryService.deleteCategory(categoryId);
         return new RedirectView("/admin/categories?success", true);
-    }
-
-
-    @GetMapping("/admin/orders")
-    public String adminOrders( Model model){
-
-        List<OrderDto> allOrders = orderService.findAllOrders();
-
-//        for (OrderDto orderDto : allOrders) {
-//            System.out.println("Order ID: " + orderDto.getOrderId());
-//            System.out.println("User ID: " + orderDto.getUserId());
-//            System.out.println("Username: " + orderDto.getUserName());
-//            System.out.println("Address: " + orderDto.getAddress());
-//            System.out.println("Order Date: " + orderDto.getOrderDate());
-//            // Display order products
-//            List<OrderProductDto> products = orderDto.getProducts();
-//            for (OrderProductDto product : products) {
-//                System.out.println("Product ID: " + product.getProductId());
-//                System.out.println("Product Name: " + product.getProductName());
-//                System.out.println("Product Description: " + product.getProductDescription());
-//                // Add more product details as needed
-//            }
-//            System.out.println("----------------------------------");
-//        }
-
-        model.addAttribute("allOrders", allOrders);
-
-        return "viewAllOrders";
     }
 
 
@@ -233,10 +158,11 @@ public class AuthController {
                                   BindingResult result,
                                   Model model , HttpSession session){
         User user = userService.loginUser(userDto.getEmail(), userDto.getPassword());
-        if (userDto.getEmail().equals("admin@gmail.com") && userDto.getPassword().equals("admin")) {
+        if (userDto.getEmail().equals("admin@gmail.com") && userDto.getPassword().equals("TUT2024")) {
             User amdinUser = new User();
             amdinUser.setEmail("admin@gamil.com");
-            amdinUser.setPassword("admin");
+            amdinUser.setPassword("TUT2024");
+            amdinUser.setRole("ADMIN");
             sessionManager.createSession(session.getId(), amdinUser);
             return "redirect:/dashboard";
         }
